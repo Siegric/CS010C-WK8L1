@@ -15,13 +15,16 @@ class HashTable {
 	int size;
 
  public:
-	HashTable(int);
-	bool contains(const string &);
+	HashTable(int);//Constuctor
+	~HashTable(); //Destructor
+	bool contains(const string &);//Search if the table contains given element
 	double getAverage(const string &);
-	void put(const string &, int);
+	void put(const string &, int);//Insert
  
  private:
-	int computeHash(const string &);
+	int computeHash(const string &);//Computes the hash for given input
+	HashTable* operator=(const HashTable* rhs);//Assignment operator
+	HashTable(HashTable* rhs);//Copy Constructor
 };
 
 #endif
