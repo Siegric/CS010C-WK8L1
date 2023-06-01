@@ -7,57 +7,58 @@ using namespace std;
 #include "HashTable.h"
 #include "WordEntry.h"
 
-//Default constructor
-HashTable::HashTable (int s) {
+// Default constructor
+HashTable::HashTable(int s) {
     size = s;
-    hashTable = new list<WordEntry>[size]; //Makes a new list of WordEntry
+    hashTable = new list<WordEntry>[size]; // Makes a new list of WordEntry for the hash table
 }
 
+// Destructor
 HashTable::~HashTable() {
     size = 0;
-    delete[] hashTable;
+    delete[] hashTable; // Deallocates the dynamically allocated hash table
 }
 
-//Function compute hash for a given input
+// Function to compute the hash value for a given input string
 int HashTable::computeHash(const string &s) {
     int hash = 0;
-    for(int i = 0; i < s.length(); i++)
+    for (int i = 0; i < s.length(); i++)
         hash = hash + (int)s[i];
-    return hash % size; //Makes sure the hash is not greater than give size
+    return hash % size; // Makes sure the hash value is not greater than the given size
 }
 
-//Insert operation
+// Insert operation to add a word and its score to the hash table
 void HashTable::put(const string &s, int score) {
     int hash = computeHash(s);
-    for(auto &it : hashTable[hash]){
-        if(it.getWord() == s){
-            it.addNewAppearance(score);
+    for (auto &it : hashTable[hash]) {
+        if (it.getWord() == s) {
+            it.addNewAppearance(score); // If the word already exists, update its appearance with the new score
             return;
         }
     }
-    hashTable[hash].push_back(WordEntry(s, score));
+    hashTable[hash].push_back(WordEntry(s, score)); // If the word doesn't exist, create a new WordEntry and add it to the bucket
 }
 
-//Simply uses the getaverage helper that is given
+// Function to get the average score of a given word
 double HashTable::getAverage(const string &s) {
-    if(contains(s)){
+    if (contains(s)) {
         int hash = computeHash(s);
-        for(auto &it : hashTable[hash]){
-            if(it.getWord() == s)
-                return it.getAverage();
+        for (auto &it : hashTable[hash]) {
+            if (it.getWord() == s)
+                return it.getAverage(); // If the word is found, return its average score
         }
     }
-    return 2.0;
+    return 2.0; // If the word is not found, return a default average score of 2.0
 }
 
-//Checks if given string exists in a bucket from the list
+// Function to check if a given word exists in the hash table
 bool HashTable::contains(const string &s) {
     int hash = computeHash(s);
-    for(auto &it : hashTable[hash]){
-        if(it.getWord() == s)
-            return true;
+    for (auto &it : hashTable[hash]) {
+        if (it.getWord() == s)
+            return true; // If the word is found, return true
     }
-    return false;
+    return false; // If the word is not found, return false
 }
 
 int main() {
