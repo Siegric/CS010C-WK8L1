@@ -7,18 +7,21 @@ using namespace std;
 #include "HashTable.h"
 #include "WordEntry.h"
 
+//Default constructor
 HashTable::HashTable (int s) {
     size = s;
-    hashTable = new list<WordEntry>[size];
+    hashTable = new list<WordEntry>[size]; //Makes a new list of WordEntry
 }
 
+//Function compute hash for a given input
 int HashTable::computeHash(const string &s) {
     int hash = 0;
     for(int i = 0; i < s.length(); i++)
         hash = hash + (int)s[i];
-    return hash % size;
+    return hash % size; //Makes sure the hash is not greater than give size
 }
 
+//Insert operation
 void HashTable::put(const string &s, int score) {
     int hash = computeHash(s);
     for(auto &it : hashTable[hash]){
@@ -30,6 +33,7 @@ void HashTable::put(const string &s, int score) {
     hashTable[hash].push_back(WordEntry(s, score));
 }
 
+//Simply uses the getaverage helper that is given
 double HashTable::getAverage(const string &s) {
     if(contains(s)){
         int hash = computeHash(s);
@@ -41,6 +45,7 @@ double HashTable::getAverage(const string &s) {
     return 2.0;
 }
 
+//Checks if given string exists in a bucket from the list
 bool HashTable::contains(const string &s) {
     int hash = computeHash(s);
     for(auto &it : hashTable[hash]){
