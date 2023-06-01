@@ -13,6 +13,11 @@ HashTable::HashTable (int s) {
     hashTable = new list<WordEntry>[size]; //Makes a new list of WordEntry
 }
 
+HashTable::~HashTable() {
+    size = 0;
+    delete[] hashTable;
+}
+
 //Function compute hash for a given input
 int HashTable::computeHash(const string &s) {
     int hash = 0;
